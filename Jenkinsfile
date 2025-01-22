@@ -40,7 +40,7 @@ pipeline {
                 withSonarQubeEnv('SAST-SonarQube') {
                     sh """
                         ./mvnw sonar:sonar \
-                        -Dsonar.projectKey=${params.GIT_REPONAME} \
+                        -Dsonar.projectKey=${GIT_REPONAME} \
                         -Dsonar.sources=src/main/java \
                         -Dsonar.tests=src/test/java \
                         -Dsonar.java.binaries=target/classes \
