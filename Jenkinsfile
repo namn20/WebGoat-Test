@@ -37,12 +37,18 @@ pipeline {
 
 		stage('SAST') {
 			steps{
-				script{
-                	// SonarQube 작업을 호출한다.
-					build job: 'SAST-SonarQube', parameters:[
-						string(name: 'GIT_REPONAME', value: gitRepoName)
-					], wait: false
-				}
+                withSonarQubeEnv('SAST-SonarQube') {
+                    sh """
+                        ./mvnw sonar:sonar \
+                        -Dsonar.projectKey=${params.GIT_REPONAME} \
+                        -Dsonar.sources=src/main/java \
+                        -Dsonar.tests=src/test/java \
+                        -Dsonar.java.binaries=target/classes \
+                        -Dsonar.java.test.binaries=target/test-classes \
+                        -Dsonar.coverage.exclusions=src/test/**/* \
+                        -Dsonar.exclusions=src/test/**/*
+                    """
+                }
 			}
 		}
 	}
