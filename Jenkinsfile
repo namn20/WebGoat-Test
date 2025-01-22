@@ -41,8 +41,12 @@ pipeline {
                     sh """
                         ./mvnw sonar:sonar \
                         -Dsonar.projectKey=${params.GIT_REPONAME} \
-                        -Dsonar.sources=. \
-                        -Dsonar.java.binaries=target/classes
+                        -Dsonar.sources=src/main/java \
+                        -Dsonar.tests=src/test/java \
+                        -Dsonar.java.binaries=target/classes \
+                        -Dsonar.java.test.binaries=target/test-classes \
+                        -Dsonar.coverage.exclusions=src/test/**/* \
+                        -Dsonar.exclusions=src/test/**/*
                     """
                 }
 			}
